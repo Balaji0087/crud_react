@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/students";
+const API = import.meta.env.VITE_API_URL;
 
 function App() {
   const [students, setStudents] = useState([]);
