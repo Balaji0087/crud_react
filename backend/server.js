@@ -8,6 +8,7 @@ const app = express();
 const frontendurl=process.env.Frontend_API_URL;
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://studservice.onrender.com",
   frontendurl
 ];
 
