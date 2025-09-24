@@ -12,7 +12,7 @@ function App() {
   const fetchStudents = async () => {
     try {
       const res = await axios.get(API);
-      console.log("API Response:", API);
+      console.log("API Response:", res.data.students);
       // backend returns { students: [...] }
       setStudents(res.data.students);
     } catch (err) {
