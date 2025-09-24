@@ -5,11 +5,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const app = express();
-const frontendurl=process.env.Frontend_API_URL;
+
+// ✅ Allow only your frontend
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://studservice.onrender.com",
-  frontendurl
+  "http://localhost:3000", // local dev
+  process.env.Frontend_API_URL // production frontend
 ];
 
 const corsOptions = {
@@ -25,29 +25,29 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.error(err));
+// ✅ MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error(err));
 
-// Schema + Model
+// ✅ Schema + Model
 const studentSchema = new mongoose.Schema({
   name: String,
   age: Number,
-  course: String,
+  course: String
 });
 const Student = mongoose.model("Student", studentSchema);
 
-// Routes
+// ✅ Routes
 app.get("/students", async (req, res) => {
   const students = await Student.find();
-  res.json(students);
+  res.json({ students }); // return inside object
 });
 
 app.post("/students", async (req, res) => {
@@ -57,7 +57,11 @@ app.post("/students", async (req, res) => {
 });
 
 app.put("/students/:id", async (req, res) => {
-  const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const updatedStudent = await Student.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
   res.json(updatedStudent);
 });
 
@@ -66,6 +70,6 @@ app.delete("/students/:id", async (req, res) => {
   res.json({ message: "Student deleted" });
 });
 
-// Start server
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
